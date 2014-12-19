@@ -1,0 +1,75 @@
+<<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+</head>
+<body>
+
+  <style type="text/css">
+    body {
+              background-color: ivory;
+          }
+          canvas {
+              border:1px solid red;
+          }
+  </style>
+  <div id='#downlog'></div>
+  <p>Click once to set starting rectangle position</p>
+  <p>Click again to set the ending position & draw rectangle</p>
+  <canvas id="canvas" width="300" height="300"></canvas>
+
+  <script type="text/javascript">
+    var canvas = document.getElementById("canvas");
+    var ctx = canvas.getContext("2d");
+
+    var canvasOffset = $("#canvas").offset();
+    var offsetX = canvasOffset.left;
+    var offsetY = canvasOffset.top;
+
+    var isDrawing = false;
+    var startX;
+    var startY;
+    var i = 0;
+
+    function handleMouseDown(e) {
+        mouseX = parseInt(e.clientX - offsetX);
+        mouseY = parseInt(e.clientY - offsetY);
+        $("#downlog").html("Down: " + mouseX + " / " + mouseY);
+
+        // Put your mousedown stuff here
+        if (isDrawing) {
+            // isDrawing = false;
+            ctx.beginPath();
+            ctx.moveTo(startX, startY);
+            ctx.lineTo(mouseX, mouseY);
+            ctx.stroke();
+
+            startX = mouseX;
+            startY = mouseY;
+            // debugger
+            canvas.style.cursor = "default";
+        } else {
+            isDrawing = true;
+            startX = mouseX;
+            startY = mouseY;
+            canvas.style.cursor = "crosshair";
+        }
+
+        if (i == 4) {
+
+        ctx.closePath();
+        ctx.fillStyle = "rgb(200,0,0)";
+        ctx.fill();
+        }
+        i++;
+
+    }
+
+    $("#canvas").mousedown(function (e) {
+        handleMouseDown(e);
+    });
+  </script>
+</body>
+</html>
+
